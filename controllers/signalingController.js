@@ -16,8 +16,8 @@
  */
 
 import { Socket, Server } from "socket.io";
-import { offerService } from "../services/offerService";
-import { SOCKET_EVENTS } from "../utils/constants";
+import { offerService } from "../services/offerService.js";
+import { SOCKET_EVENTS } from "../utils/constants.js";
 
 // In-memory mapping of socket.id -> username
 const connectedUsers = new Map();

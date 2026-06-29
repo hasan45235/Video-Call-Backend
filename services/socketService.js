@@ -16,17 +16,17 @@
 
 import { Server as HttpServer } from "http";
 import { Server, Socket } from "socket.io";
-import { configureSocket } from "../config/socket";
-import { registerSocketRoutes } from "../routes/socketRoutes";
-import { SOCKET_EVENTS } from "../utils/constants";
+import { configureSocket } from "../config/socket.js";
+import { registerSocketRoutes } from "../routes/socketRoutes.js";
+import { SOCKET_EVENTS } from "../utils/constants.js";
 
-let ioInstance  = null;
+let ioInstance = null;
 
 export const socketService = {
   /**
    * Initialize Socket.IO with the HTTP Server instance
    */
-  init(server){
+  init(server) {
     const io = configureSocket(server);
     ioInstance = io;
 
@@ -44,7 +44,7 @@ export const socketService = {
   /**
    * Retrieve the active Socket.IO Server instance
    */
-  getIO(){
+  getIO() {
     if (!ioInstance) {
       throw new Error("SocketService is not initialized. Call init(server) first.");
     }

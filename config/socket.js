@@ -14,7 +14,6 @@
  * low-latency full-duplex communication channels required for WebRTC negotiation.
  */
 
-import { Server as HttpServer } from "http";
 import { Server } from "socket.io";
 
 export function configureSocket(server) {

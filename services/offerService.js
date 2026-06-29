@@ -16,27 +16,34 @@
  */
 
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 
 // Robust connection to MongoDB (using optional environment variable or local fallback)
-const MONGO_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/webrtc_app";
+
 
 let isDbConnected = false;
 
-mongoose
-  .connect(MONGO_URI)
-  .then(() => {
-    console.log("Successfully connected to MongoDB");
-    isDbConnected = true;
-  })
-  .catch((err) => {
-    console.warn("MongoDB connection failed, falling back to in-memory store only:", err.message);
-  });
+const mongooseConnection = async () => {
+  await mongoose
+    .connect(process.env.MONGO_URI)
+    .then(() => {
+      console.log("Successfully connected to MongoDB");
+      isDbConnected = true;
+    })
+    .catch((err) => {
+      console.warn("MongoDB connection failed, falling back to in-memory store only:", err.message);
+    });
+
+}
+
+mongooseConnection();
 
 // Schema to log calls (satisfying MERN MongoDB requirements)
 const CallLogSchema = new mongoose.Schema({
-  offerer: { type, required: true },
-  receiver: { type, required: true },
-  status: { type, enum: ["initiated", "accepted", "rejected", "ended"], default: "initiated" },
+  offerer: { type: String, required: true },
+  receiver: { type: String, required: true },
+  status: { type: String, enum: ["initiated", "accepted", "rejected", "ended"], default: "initiated" },
   createdAt: { type: Date, default: Date.now },
   endedAt: { type: Date }
 });
@@ -52,7 +59,7 @@ export const offerService = {
    * Save an active offer
    */
   async createOffer(fromSocketId, toSocketId, offer, offererName, receiverName) {
-    let logId ;
+    let logId;
 
     if (isDbConnected) {
       try {

@@ -15,8 +15,8 @@
  */
 
 import { Socket, Server } from "socket.io";
-import { signalingController } from "../controllers/signalingController";
-import { SOCKET_EVENTS } from "../utils/constants";
+import { signalingController } from "../controllers/signalingController.js";
+import { SOCKET_EVENTS } from "../utils/constants.js";
 
 export function registerSocketRoutes(socket, io) {
   // 1. User registration/joining

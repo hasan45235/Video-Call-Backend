@@ -17,20 +17,23 @@
  * for WebRTC camera/microphone APIs in the browser.)
  */
 
+// Load environment variables
+import dotenv from "dotenv";
+dotenv.config();
+
+// Import services
+import { offerService } from "./services/offerService.js";
+import { socketService } from "./services/socketService.js";
+
+// Import framework and utilities
 import express from "express";
 import http from "http";
-import path from "path";
-import dotenv from "dotenv";
-import { socketService } from "../server/services/socketService";
-import { offerService } from "../server/services/offerService";
 
-// Load environment variables
-dotenv.config();
 
 async function startServer() {
   const app = express();
   const server = http.createServer(app);
-  const PORT = process.env.PORT || 8181;
+  const PORT = process.env.PORT;
 
   app.use(express.json());
 
@@ -39,14 +42,14 @@ async function startServer() {
     res.json({ status: "healthy", timestamp: new Date().toISOString() });
   });
 
-  // app.get("/api/history", async (req, res) => {
-  //   try {
-  //     const history = await offerService.getCallHistory();
-  //     res.json({ success: true, data: history });
-  //   } catch (err: any) {
-  //     res.status(500).json({ success: false, error: err.message });
-  //   }
-  // });
+  app.get("/api/history", async (req, res) => {
+    try {
+      const history = await offerService.getCallHistory();
+      res.json({ success: true, data: history });
+    } catch (err) {
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
 
   // Initialize WebRTC Signaling Socket service
   socketService.init(server);

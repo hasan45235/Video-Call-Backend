@@ -37,7 +37,7 @@ async function startServer() {
 
   app.use(express.json());
 
-  // API Routes (e.g., fetching call logs for transparency)
+  // API Routes 
   app.get("/api/health", (req, res) => {
     res.json({ status: "healthy", timestamp: new Date().toISOString() });
   });

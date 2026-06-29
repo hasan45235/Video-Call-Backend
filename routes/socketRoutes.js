@@ -14,7 +14,6 @@
  * rejecting, sending candidates, and ending calls).
  */
 
-import { Socket, Server } from "socket.io";
 import { signalingController } from "../controllers/signalingController.js";
 import { SOCKET_EVENTS } from "../utils/constants.js";
 

@@ -15,7 +15,6 @@
  * one client and forwarding them precisely to the targeted peer socket.
  */
 
-import { Socket, Server } from "socket.io";
 import { offerService } from "../services/offerService.js";
 import { SOCKET_EVENTS } from "../utils/constants.js";
 

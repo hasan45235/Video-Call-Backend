@@ -14,8 +14,6 @@
  * to the routes that manage peer-to-peer signalling and connection events.
  */
 
-import { Server as HttpServer } from "http";
-import { Server, Socket } from "socket.io";
 import { configureSocket } from "../config/socket.js";
 import { registerSocketRoutes } from "../routes/socketRoutes.js";
 import { SOCKET_EVENTS } from "../utils/constants.js";

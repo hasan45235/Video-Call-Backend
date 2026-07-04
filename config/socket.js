@@ -15,14 +15,11 @@
  */
 
 import { Server } from "socket.io";
+import { corsOptions } from "./cors.js";
 
 export function configureSocket(server) {
   return new Server(server, {
-    cors: {
-      origin: "*", // Allows any frontend client to connect
-      methods: ["GET", "POST"],
-      credentials: true,
-    },
+    cors: corsOptions,
     transports: ["websocket", "polling"],
   });
 }

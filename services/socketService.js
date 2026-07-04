@@ -17,6 +17,7 @@
 import { configureSocket } from "../config/socket.js";
 import { registerSocketRoutes } from "../routes/socketRoutes.js";
 import { SOCKET_EVENTS } from "../utils/constants.js";
+import { sessionService } from "./sessionService.js";
 
 let ioInstance = null;
 
@@ -26,9 +27,11 @@ export const socketService = {
    */
   init(server) {
     const io = configureSocket(server);
+    sessionService.attachToEngine(io);
     ioInstance = io;
 
     io.on(SOCKET_EVENTS.CONNECTION, (socket) => {
+      sessionService.bindSocket(socket);
       console.log(`New socket connection established: ${socket.id}`);
 
       // Register all routes/event handlers for this socket

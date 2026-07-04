@@ -28,6 +28,9 @@ import { socketService } from "./services/socketService.js";
 // Import framework and utilities
 import express from "express";
 import http from "http";
+import cors from "cors";
+import { corsOptions } from "./config/cors.js";
+import { turnRouter } from "./routes/turnRoutes.js";
 
 
 async function startServer() {
@@ -36,6 +39,7 @@ async function startServer() {
   const PORT = process.env.PORT;
 
   app.use(express.json());
+  app.use(cors(corsOptions));
 
   // API Routes 
   app.get("/api/health", (req, res) => {
@@ -50,6 +54,8 @@ async function startServer() {
       res.status(500).json({ success: false, error: err.message });
     }
   });
+
+  app.use("/api", turnRouter);
 
   // Initialize WebRTC Signaling Socket service
   socketService.init(server);

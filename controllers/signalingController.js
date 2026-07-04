@@ -17,6 +17,7 @@
 
 import { offerService } from "../services/offerService.js";
 import { SOCKET_EVENTS } from "../utils/constants.js";
+import { sessionService } from "../services/sessionService.js";
 
 // In-memory mapping of socket.id -> username
 const connectedUsers = new Map();
@@ -54,6 +55,11 @@ export const signalingController = {
 
     // Save user connection
     connectedUsers.set(socket.id, trimmedName);
+    if (!sessionService.authorizeSocket(socket, trimmedName)) {
+      connectedUsers.delete(socket.id);
+      socket.emit("register-error", "Unable to establish an authenticated session");
+      return;
+    }
     console.log(`User registered: ${trimmedName} (${socket.id})`);
 
     // Acknowledge registration
@@ -164,6 +170,7 @@ export const signalingController = {
    */
   async handleDisconnect(socket, io) {
     const username = connectedUsers.get(socket.id);
+    sessionService.revokeSocket(socket);
     if (!username) return;
 
     console.log(`User disconnected: ${username} (${socket.id})`);
